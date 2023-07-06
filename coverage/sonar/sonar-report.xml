@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testExecutions version="1">
+    <file path="C:\Users\Developer\Desktop\Versionamiento LEARNHUB\learnhub_latest canecillas 01 07 23\learnhub_latest canecillas 01 07 23\server\__tests__\prueba.test.js">
+        <testCase name="sumar 1 + 2 es igual a 3" duration="2"/>
+    </file>
+</testExecutions>
