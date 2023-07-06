@@ -1,19 +1,38 @@
+// Importamos la librería AWS desde el módulo "aws-sdk"
 import AWS from "aws-sdk";
+
+// Importamos la función "nanoid" desde el módulo "nanoid"
 import { nanoid } from "nanoid";
+
+// Importamos la función "slugify" desde el módulo "slugify"
 import slugify from "slugify";
+
+// Importamos la función "readFileSync" desde el módulo "fs"
 import { readFileSync } from "fs";
+
+// Importamos el modelo "User" desde el archivo "../models/user"
 import User from "../models/user";
+
+// Importamos el modelo "Course" desde el archivo "../models/course"
 import Course from "../models/course";
+
+// Importamos el modelo "Completed" desde el archivo "../models/completed"
 import Completed from "../models/completed";
 
+// Importamos el modelo "CompletedQuestion" desde el archivo "../models/completedQuestion"
+import CompletedQuestion from "../models/completedQuestion";
+
+// Configuración de AWS que contiene las credenciales y la región
 const awsConfig = {
-    accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
-    region: process.env.AWS_REGION,
-    apiVersion: process.env.AWS_API_VERSION,
+    accessKeyId: process.env.AWS_ACCESS_KEY_ID, // ID de clave de acceso de AWS proporcionado en el entorno
+    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY, // Clave de acceso secreta de AWS proporcionada en el entorno
+    region: process.env.AWS_REGION, // Región de AWS proporcionada en el entorno
+    apiVersion: process.env.AWS_API_VERSION, // Versión de la API de AWS proporcionada en el entorno
 };
 
+// Creación de una nueva instancia de AWS S3 utilizando la configuración previamente definida
 const S3 = new AWS.S3(awsConfig);
+
 
 export const uploadImage = async (req, res) => {
     try {
@@ -385,6 +404,33 @@ export const markCompleted = async (req, res) => {
     }
 };
 
+export const markCompletedQuestion = async (req, res) => {
+
+    const { courseId, questionId } = req.body;
+    console.log("Course ID: ", courseId);
+    console.log("Question ID: ", questionId);
+
+    const existing = await CompletedQuestion.findOne({ user: req.user._id, course: courseId }).exec(); // NOSONAR
+    if (existing) {
+        const updated = await CompletedQuestion.findOneAndUpdate({ user: req.user._id, course: courseId }, { $addToSet: { questions: questionId } }).exec(); // NOSONAR
+        console.log(updated);
+        res.json({ ok: true });
+
+    }
+    else {
+        const created = await new CompletedQuestion({
+            user: req.user._id,
+            course: courseId,
+            questions: questionId,
+        }).save();
+        console.log(created);
+        res.json({ ok: true });
+
+    }
+};
+
+
+
 export const listCompleted = async (req, res) => {
 
     try {
@@ -396,6 +442,18 @@ export const listCompleted = async (req, res) => {
     }
 
 };
+
+export const listCompletedQuestion = async (req, res) => {
+    try {
+        const list = await CompletedQuestion.findOne({ user: req.user._id, course: req.body.courseId }).exec(); // NOSONAR
+        list && res.json(list.questions);
+
+    }
+    catch (err) {
+        console.log(err);
+    }
+};
+
 
 export const markIncomplete = async (req, res) => {
     try {

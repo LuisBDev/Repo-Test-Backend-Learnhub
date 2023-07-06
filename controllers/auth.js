@@ -1,15 +1,24 @@
-import User from "../models/user";
-import { hashPassword, comparePassword } from "../utils/auth";
-import jwt from "jsonwebtoken";
-import { nanoid } from "nanoid";
+// Importamos la librería AWS desde el módulo "aws-sdk"
 import AWS from "aws-sdk";
 
+// Importamos la función "nanoid" desde el módulo "nanoid"
+import { nanoid } from "nanoid";
+
+// Importamos el modelo "User" desde el archivo "../models/user"
+import User from "../models/user";
+
+
+// Configuración de AWS que contiene las credenciales y la región
 const awsConfig = {
-  accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-  secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
-  region: process.env.AWS_REGION,
-  apiVersion: process.env.AWS_API_VERSION,
+    accessKeyId: process.env.AWS_ACCESS_KEY_ID, // ID de clave de acceso de AWS proporcionado en el entorno
+    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY, // Clave de acceso secreta de AWS proporcionada en el entorno
+    region: process.env.AWS_REGION, // Región de AWS proporcionada en el entorno
+    apiVersion: process.env.AWS_API_VERSION, // Versión de la API de AWS proporcionada en el entorno
 };
+
+// Creación de una nueva instancia de AWS S3 utilizando la configuración previamente definida
+const S3 = new AWS.S3(awsConfig);
+
 
 const SES = new AWS.SES(awsConfig);
 
