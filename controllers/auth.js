@@ -10,10 +10,10 @@ import User from "../models/user";
 
 // Configuración de AWS que contiene las credenciales y la región
 const awsConfig = {
-    accessKeyId: process.env.AWS_ACCESS_KEY_ID, // ID de clave de acceso de AWS proporcionado en el entorno
-    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY, // Clave de acceso secreta de AWS proporcionada en el entorno
-    region: process.env.AWS_REGION, // Región de AWS proporcionada en el entorno
-    apiVersion: process.env.AWS_API_VERSION, // Versión de la API de AWS proporcionada en el entorno
+  accessKeyId: process.env.AWS_ACCESS_KEY_ID, // ID de clave de acceso de AWS proporcionado en el entorno
+  secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY, // Clave de acceso secreta de AWS proporcionada en el entorno
+  region: process.env.AWS_REGION, // Región de AWS proporcionada en el entorno
+  apiVersion: process.env.AWS_API_VERSION, // Versión de la API de AWS proporcionada en el entorno
 };
 
 // Creación de una nueva instancia de AWS S3 utilizando la configuración previamente definida
